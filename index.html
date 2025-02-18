@@ -66,6 +66,33 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.5);
         }
+        /* Стиль для модального окна */
+        .movie-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+            display: none;
+            z-index: 1000;
+            width: 300px;
+            text-align: center;
+        }
+        .movie-modal button {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .movie-modal button:hover {
+            background-color: #0056b3;
+        }
         @media (max-width: 600px) {
             .search-label {
                 font-size: 20px;
@@ -114,6 +141,16 @@
         <button onclick="submitMovie()">Добавить</button>
     </div>
 
+    <!-- Модальное окно для отображения информации о фильме -->
+    <div class="movie-modal" id="movieModal">
+        <h2 id="modalMovieName"></h2>
+        <p id="modalMovieGenre"></p>
+        <a id="modalMovieUrl" href="#" target="_blank">
+            <button>Смотреть фильм</button>
+        </a>
+        <button onclick="closeModal()">Закрыть</button>
+    </div>
+
     <script>
         function toggleSearch() {
             const searchInput = document.getElementById('searchInput');
@@ -159,17 +196,16 @@
         }
 
         function openMovieDetails(name, genre, url) {
-            const moviePage = window.open('', '_blank');
-            moviePage.document.write(`
-                <html>
-                <head><title>${name}</title></head>
-                <body>
-                    <h1>${name}</h1>
-                    <p>Жанр: ${genre}</p>
-                    <button onclick="window.location.href='${url}'">Смотреть фильм</button>
-                </body>
-                </html>
-            `);
+            // Открытие модального окна с информацией о фильме
+            document.getElementById('modalMovieName').textContent = name;
+            document.getElementById('modalMovieGenre').textContent = `Жанр: ${genre}`;
+            document.getElementById('modalMovieUrl').href = url;
+            document.getElementById('movieModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            // Закрытие модального окна
+            document.getElementById('movieModal').style.display = 'none';
         }
 
         function searchMovies() {
